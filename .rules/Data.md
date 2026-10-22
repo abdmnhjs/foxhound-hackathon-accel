@@ -4,8 +4,8 @@
 
 - Work only on the Foxhound Data pipeline unless the user explicitly expands the scope.
 - Do not modify `apps/web`, the AI Agent, backend code, or unrelated packages without an explicit request.
-- The future Data pipeline must live as a dedicated application workspace under `apps/`.
-- Do not silently choose Python, TypeScript, or another stack. Present the trade-offs and obtain an explicit decision before scaffolding the Data application.
+- The Data pipeline lives in the dedicated `apps/data` application workspace.
+- Use Python for the Data pipeline, as explicitly selected by the user.
 - Preserve the monorepo's existing workspace, script, formatting, and tooling conventions where they apply.
 - Do not refactor files unrelated to the requested Data task.
 
@@ -13,8 +13,8 @@
 
 - `schema-feedback.json` is the source of truth for every output produced by the Data pipeline.
 - `feedbacks.mock.json` must always remain valid against that schema.
-- The current feedback fields are required `id`, `text`, and ISO 8601 `createdAt`, with optional `userId` and `companyId`.
-- Never add `source`, `plan`, or `mrr` without an explicit decision from the user.
+- The current feedback fields are required `id`, `text`, and ISO 8601 `createdAt`, with optional `userId`, `companyId`, and `plan`.
+- `plan` is explicitly approved. Never add `source` or `mrr` without an explicit decision from the user.
 - Any contract change must update the schema, mock data, and associated tests together.
 - Validate every exported payload against `schema-feedback.json`.
 
