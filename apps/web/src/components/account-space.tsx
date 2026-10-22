@@ -1,4 +1,6 @@
 import { useState } from "react"
+import axios from "axios"
+import type { FormEvent } from "react"
 import { useNavigate } from "@tanstack/react-router"
 import { LogOut, MessageSquare, LayoutDashboard } from "lucide-react"
 import { authRequest } from "../lib/auth"
@@ -7,6 +9,35 @@ export function AccountSpace({ founder }: { founder: boolean }) {
   const navigate = useNavigate()
   const [pending, setPending] = useState(false)
   const [error, setError] = useState("")
+  const [feedbackPending, setFeedbackPending] = useState(false)
+  const [feedbackError, setFeedbackError] = useState("")
+  const [feedbackSent, setFeedbackSent] = useState(false)
+  async function submitFeedback(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    if (feedbackPending) return
+    const form = event.currentTarget
+    const text = String(new FormData(form).get("feedback") ?? "").trim()
+    setFeedbackError("")
+    setFeedbackSent(false)
+    if (!text) {
+      setFeedbackError("Please enter your feedback.")
+      return
+    }
+    setFeedbackPending(true)
+    try {
+      await axios.post("/api/feedback", { text }, { withCredentials: true })
+      form.reset()
+      setFeedbackSent(true)
+    } catch (cause) {
+      setFeedbackError(
+        axios.isAxiosError(cause) && cause.response?.status === 401
+          ? "Please sign in again to send feedback."
+          : "Unable to send feedback. Please try again."
+      )
+    } finally {
+      setFeedbackPending(false)
+    }
+  }
   async function logout() {
     setPending(true)
     setError("")
@@ -68,10 +99,7 @@ export function AccountSpace({ founder }: { founder: boolean }) {
               : "Your conversations and feedback will appear here."}
           </p>
           {!founder && (
-            <form
-              onSubmit={(event) => event.preventDefault()}
-              className="mt-6 space-y-4"
-            >
+            <form onSubmit={submitFeedback} className="mt-6 space-y-4">
               <div>
                 <label htmlFor="feedback" className="text-sm font-medium">
                   Your feedback
@@ -80,16 +108,29 @@ export function AccountSpace({ founder }: { founder: boolean }) {
                   id="feedback"
                   name="feedback"
                   rows={6}
+                  required
+                  disabled={feedbackPending}
                   placeholder="Share your thoughts or suggestions..."
                   className="mt-2 w-full resize-y rounded-xl border bg-white px-4 py-3 outline-none focus:ring-2 focus:ring-slate-900"
                 />
               </div>
               <button
                 type="submit"
-                className="rounded-xl bg-slate-950 px-6 py-3 font-medium text-white hover:bg-slate-800"
+                disabled={feedbackPending}
+                className="rounded-xl bg-slate-950 px-6 py-3 font-medium text-white hover:bg-slate-800 disabled:opacity-50"
               >
-                Send feedback
+                {feedbackPending ? "Sending..." : "Send feedback"}
               </button>
+              {feedbackError && (
+                <p role="alert" className="text-sm text-red-700">
+                  {feedbackError}
+                </p>
+              )}
+              {feedbackSent && (
+                <p role="status" className="text-sm text-green-700">
+                  Your feedback has been sent.
+                </p>
+              )}
             </form>
           )}
         </div>

@@ -7,7 +7,7 @@ import tailwindcss from "@tailwindcss/vite"
 const config = defineConfig({
   server: {
     proxy: {
-      "/api/auth": { target: "http://localhost:3000", changeOrigin: false },
+      "/api": { target: "http://localhost:3000", changeOrigin: false },
     },
   },
   resolve: { tsconfigPaths: true },
