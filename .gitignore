@@ -1,3 +1,5 @@
+apps/ai/venv312/
+
 node_modules
 .DS_Store
 dist
@@ -18,4 +20,14 @@ todos.json
 
 # typescript
 *.tsbuildinfo
+<<<<<<< HEAD
 apps/api/src/generated/prisma/
+=======
+
+# python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.venv/
+>>>>>>> integration-data-ai

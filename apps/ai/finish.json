@@ -1,0 +1,28 @@
+{
+  "groups": [
+    {
+      "title": "Dashboard très lent sur gros volumes",
+      "summary": "Le dashboard met plus de 12 secondes à charger au-delà de 50k enregistrements.",
+      "score": 78,
+      "priority": "red",
+      "contradiction": null,
+      "feedbackIds": ["fb_001"]
+    },
+    {
+      "title": "Export CSV pour le reporting",
+      "summary": "Un client demande un export CSV pour son workflow de reporting mensuel.",
+      "score": 52,
+      "priority": "yellow",
+      "contradiction": null,
+      "feedbackIds": ["fb_003"]
+    },
+    {
+      "title": "Dark mode",
+      "summary": "Demande d'un thème sombre pour un meilleur confort de nuit.",
+      "score": 21,
+      "priority": "green",
+      "contradiction": null,
+      "feedbackIds": ["fb_002"]
+    }
+  ]
+}
