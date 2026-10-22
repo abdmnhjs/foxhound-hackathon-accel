@@ -102,18 +102,14 @@ def normalize(value: float, maximum: float) -> float:
 
 
 def get_distinct_entity_count(group: list[dict]) -> int:
-    """Count distinct users and companies in a group."""
+    """Count distinct users in a group."""
     entities = set()
 
     for feedback in group:
         user_id = feedback.get("userId")
-        company_id = feedback.get("companyId")
 
         if user_id:
             entities.add(("user", user_id))
-
-        if company_id:
-            entities.add(("company", company_id))
 
     return len(entities)
 
@@ -194,14 +190,22 @@ def analyze_group_with_llm(group: list[dict]) -> GroupAnalysis:
             "GROQ_API_KEY is missing. Add it to ai/.env before running analysis."
         )
 
-    # Send only feedback text to the LLM; IDs and user metadata stay in Python.
-    group_texts = [
-        feedback["text"]
+    # IDs and user identifiers stay in Python. The optional plan can help the
+    # model describe whether a theme concerns a particular customer segment.
+    group_items = [
+        {
+            "text": feedback["text"],
+            **(
+                {"plan": feedback["plan"]}
+                if feedback.get("plan")
+                else {}
+            ),
+        }
         for feedback in group
     ]
 
     request_data = {
-        "feedbacks": group_texts,
+        "feedbacks": group_items,
         "instructions": (
             "Analyze these feedback messages, which have already been grouped "
             "by semantic similarity. Return a short title naming their shared "

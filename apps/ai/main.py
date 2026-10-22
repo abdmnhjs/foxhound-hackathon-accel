@@ -2,7 +2,8 @@ import logging
 
 import uvicorn
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel, Field
+from openai import OpenAIError
+from pydantic import AwareDatetime, BaseModel, ConfigDict, Field
 
 from pipeline import MAX_FEEDBACKS, analyze
 
@@ -12,21 +13,47 @@ app = FastAPI(title="SaaS Feedback Analyzer")
 
 
 class Feedback(BaseModel):
-    id: str
+    model_config = ConfigDict(extra="forbid")
+
+    id: str = Field(min_length=1)
     text: str = Field(min_length=1)
-    createdAt: str | None = None
-    userId: str | None = None
-    companyId: str | None = None
+    createdAt: AwareDatetime
+    userId: str | None = Field(default=None, min_length=1)
+    plan: str | None = Field(default=None, min_length=1)
 
 
 class AnalyzeRequest(BaseModel):
-    feedbacks: list[Feedback] = Field(max_length=MAX_FEEDBACKS)
+    model_config = ConfigDict(extra="forbid")
+
+    feedbacks: list[Feedback] = Field(min_length=1, max_length=MAX_FEEDBACKS)
 
 
-@app.post("/analyze")
+class GroupResult(BaseModel):
+    title: str
+    summary: str
+    score: int = Field(ge=0, le=100)
+    priority: str
+    contradiction: str | None
+    feedbackIds: list[str]
+
+
+class AnalyzeResponse(BaseModel):
+    groups: list[GroupResult]
+
+
+class HealthResponse(BaseModel):
+    status: str
+
+
+@app.get("/health", response_model=HealthResponse)
+def health() -> dict[str, str]:
+    return {"status": "ok"}
+
+
+@app.post("/analyze", response_model=AnalyzeResponse)
 def analyze_feedback(request: AnalyzeRequest) -> dict:
     feedbacks = [
-        feedback.dict(exclude_none=True)
+        feedback.model_dump(mode="json", exclude_none=True)
         for feedback in request.feedbacks
     ]
 
@@ -34,6 +61,12 @@ def analyze_feedback(request: AnalyzeRequest) -> dict:
         return analyze(feedbacks)
     except RuntimeError as error:
         raise HTTPException(status_code=503, detail=str(error)) from error
+    except OpenAIError as error:
+        logger.exception("AI provider request failed")
+        raise HTTPException(
+            status_code=503,
+            detail="AI provider request failed.",
+        ) from error
     except Exception as error:
         logger.exception("Feedback analysis failed")
         raise HTTPException(

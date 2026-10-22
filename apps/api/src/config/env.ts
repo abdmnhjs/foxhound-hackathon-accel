@@ -28,3 +28,25 @@ export const trustedOrigins = (
   .split(',')
   .map((origin) => origin.trim())
   .filter(Boolean);
+
+function serviceUrl(name: string, fallback: string): string {
+  return (process.env[name] ?? fallback).replace(/\/$/, '');
+}
+
+export const dataServiceUrl = serviceUrl(
+  'DATA_SERVICE_URL',
+  'http://127.0.0.1:8001',
+);
+
+export const aiServiceUrl = serviceUrl(
+  'AI_SERVICE_URL',
+  'http://127.0.0.1:8002',
+);
+
+const configuredTimeout = Number(
+  process.env.PIPELINE_REQUEST_TIMEOUT_MS ?? 120000,
+);
+export const pipelineRequestTimeoutMs =
+  Number.isFinite(configuredTimeout) && configuredTimeout > 0
+    ? configuredTimeout
+    : 120000;

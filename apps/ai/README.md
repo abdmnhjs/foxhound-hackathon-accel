@@ -42,7 +42,14 @@ source venv312/bin/activate
 python main.py
 ```
 
-The API listens at `http://127.0.0.1:8000`. Interactive API documentation is available at `http://127.0.0.1:8000/docs`.
+The recommended local address is `http://127.0.0.1:8002`, which avoids the
+NestJS backend on port 3000 and the Data service on port 8001:
+
+```bash
+.venv/bin/python -m uvicorn main:app --host 127.0.0.1 --port 8002 --reload
+```
+
+Interactive API documentation is available at `http://127.0.0.1:8002/docs`.
 
 ## Test with the sample file
 
@@ -50,7 +57,7 @@ Leave the API running. In a second terminal, from `apps/ai`, send the existing s
 
 ```bash
 source venv312/bin/activate
-curl -X POST http://127.0.0.1:8000/analyze \
+curl -X POST http://127.0.0.1:8002/analyze \
   -H "Content-Type: application/json" \
   --data-binary @data/feedbacks.mock.json
 ```
@@ -61,7 +68,9 @@ The sample file is a complete request body with a top-level `feedbacks` array.
 
 ### `POST /analyze`
 
-The request body contains up to 100 feedback records. `id` and `text` are required; `createdAt`, `userId`, and `companyId` are optional.
+The request body contains between 1 and 100 feedback records. `id`, `text`, and
+`createdAt` are required. `userId` and `plan` are optional. Unknown properties,
+including `companyId`, are rejected.
 
 ```json
 {
@@ -71,7 +80,7 @@ The request body contains up to 100 feedback records. `id` and `text` are requir
       "text": "The dashboard takes too long to load.",
       "createdAt": "2026-10-20T09:15:00Z",
       "userId": "usr_001",
-      "companyId": "cmp_001"
+      "plan": "Pro"
     }
   ]
 }
@@ -100,10 +109,16 @@ Priority is derived from the score: `green` for 0–33, `yellow` for 34–66, an
 
 The service loads `paraphrase-multilingual-MiniLM-L12-v2` once at startup and generates embeddings locally. KMeans uses `random_state=0` and `n_init=10`. For up to 8 feedback records, each record is kept in its own group. Larger requests use approximately one cluster per eight records, with a maximum of 12 clusters.
 
-Groq is called once per cluster to generate its title, one-sentence summary, and optional contradiction. Python calculates the score using group volume, distinct user/company IDs, and feedback recency. The score weights and priority thresholds are defined in `pipeline.py`.
+Groq is called once per cluster to generate its title, one-sentence summary, and
+optional contradiction. Python calculates the score using group volume,
+distinct user IDs, and feedback recency. The score weights and priority
+thresholds are defined in `pipeline.py`.
 
 Clustering is heuristic: KMeans assigns every feedback to a group, but cannot guarantee that all members share the same theme. Contradiction detection also depends on opposing feedback appearing in the same group.
 
 ## Backend integration
 
-NestJS should make a server-to-server `POST` request to `/analyze`, send the same JSON structure as the sample file, then store or return the response as needed. Use `http://127.0.0.1:8000` locally. In deployment, configure the AI service URL reachable from the NestJS runtime; `localhost` inside a container refers to that container itself.
+NestJS makes a server-to-server `POST` request to `/analyze` after the Data
+service has normalized the payload. Configure its address with
+`AI_SERVICE_URL`; the local default is `http://127.0.0.1:8002`. The service also
+exposes `GET /health` for dependency checks.
