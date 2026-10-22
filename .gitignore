@@ -6,6 +6,7 @@ dist
 dist-ssr
 *.local
 .env*
+!apps/ai/.env.example
 .nitro
 .tanstack
 .wrangler
