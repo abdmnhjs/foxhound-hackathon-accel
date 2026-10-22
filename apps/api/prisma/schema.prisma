@@ -1,7 +1,7 @@
 generator client {
-  provider = "prisma-client"
-  output = "../src/generated/prisma"
-  moduleFormat = "esm"
+  provider            = "prisma-client"
+  output              = "../src/generated/prisma"
+  moduleFormat        = "esm"
   importFileExtension = "js"
 }
 
@@ -9,16 +9,50 @@ datasource db {
   provider = "postgresql"
 }
 
+enum FeedbackPriority {
+  red
+  yellow
+  green
+}
+
+model FeedbackUser {
+  id        String           @id @default(cuid())
+  text      String
+  createdAt DateTime         @default(now())
+  userId    String?
+  user      User?            @relation(fields: [userId], references: [id], onDelete: SetNull)
+  plan      String?
+  results   FeedbackResult[]
+
+  @@index([userId])
+  @@map("feedback_user")
+}
+
+model FeedbackResult {
+  id            String           @id @default(cuid())
+  title         String
+  summary       String
+  score         Int
+  priority      FeedbackPriority
+  contradiction String?
+  feedbacks     FeedbackUser[]
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+
+  @@map("feedback_result")
+}
+
 model User {
-  id            String    @id
+  id            String         @id
   name          String
-  email         String    @unique
-  emailVerified Boolean   @default(false)
+  email         String         @unique
+  emailVerified Boolean        @default(false)
   image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @default(now()) @updatedAt
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @default(now()) @updatedAt
   sessions      Session[]
   accounts      Account[]
+  feedbacks     FeedbackUser[]
 
   @@map("user")
 }

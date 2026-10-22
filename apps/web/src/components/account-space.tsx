@@ -67,6 +67,31 @@ export function AccountSpace({ founder }: { founder: boolean }) {
               ? "Your users? feedback will appear here."
               : "Your conversations and feedback will appear here."}
           </p>
+          {!founder && (
+            <form
+              onSubmit={(event) => event.preventDefault()}
+              className="mt-6 space-y-4"
+            >
+              <div>
+                <label htmlFor="feedback" className="text-sm font-medium">
+                  Your feedback
+                </label>
+                <textarea
+                  id="feedback"
+                  name="feedback"
+                  rows={6}
+                  placeholder="Share your thoughts or suggestions..."
+                  className="mt-2 w-full resize-y rounded-xl border bg-white px-4 py-3 outline-none focus:ring-2 focus:ring-slate-900"
+                />
+              </div>
+              <button
+                type="submit"
+                className="rounded-xl bg-slate-950 px-6 py-3 font-medium text-white hover:bg-slate-800"
+              >
+                Send feedback
+              </button>
+            </form>
+          )}
         </div>
       </section>
     </main>
