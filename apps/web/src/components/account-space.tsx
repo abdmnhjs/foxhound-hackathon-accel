@@ -63,7 +63,7 @@ export function AccountSpace({ founder }: { founder: boolean }) {
             <button
               onClick={logout}
               disabled={pending}
-              className="min-h-10 rounded-full border px-4 py-2 text-sm font-medium transition-colors hover:bg-muted disabled:opacity-50"
+              className="min-h-10 rounded-full border px-4 py-2 text-sm font-medium transition-colors hover:bg-orange-100 hover:text-orange-900 disabled:opacity-50"
             >
               {pending ? "Signing out…" : "Sign out"}
             </button>
