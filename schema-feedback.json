@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://foxhound.local/schemas/schema-feedback.json",
+  "title": "Feedback pipeline output",
+  "description": "Normalized feedback data produced by the Data pipeline and consumed by the AI agent.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["feedbacks"],
+  "properties": {
+    "feedbacks": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/feedback"
+      }
+    }
+  },
+  "$defs": {
+    "feedback": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "text", "createdAt"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "userId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "plan": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}
