@@ -12,6 +12,7 @@ dist-ssr
 .tanstack
 .wrangler
 .output
+.vercel
 .vinxi
 __unconfig*
 todos.json
