@@ -1,5 +1,7 @@
 # Local configuration
 
+For production on Vercel and Neon, follow [DEPLOYMENT.md](./DEPLOYMENT.md).
+
 ## Environment variables
 
 Create or update the monorepo root .env file next to the root package.json:
