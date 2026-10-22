@@ -4,6 +4,7 @@ import type { FormEvent } from "react"
 import { useNavigate } from "@tanstack/react-router"
 import { LogOut, MessageSquare, LayoutDashboard } from "lucide-react"
 import { authRequest } from "../lib/auth"
+import { FounderFeedback } from "./founder-feedback"
 
 export function AccountSpace({ founder }: { founder: boolean }) {
   const navigate = useNavigate()
@@ -95,9 +96,10 @@ export function AccountSpace({ founder }: { founder: boolean }) {
           </h2>
           <p className="mt-2 text-sm text-stone-500">
             {founder
-              ? "Your users? feedback will appear here."
+              ? "Explore the results of your feedback analysis."
               : "Your conversations and feedback will appear here."}
           </p>
+          {founder && <FounderFeedback />}
           {!founder && (
             <form onSubmit={submitFeedback} className="mt-6 space-y-4">
               <div>

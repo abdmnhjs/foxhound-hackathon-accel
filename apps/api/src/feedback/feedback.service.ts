@@ -5,6 +5,21 @@ import { PrismaService } from '../prisma/prisma.service.js';
 export class FeedbackService {
   constructor(private readonly prisma: PrismaService) {}
 
+  findAll() {
+    return this.prisma.client.feedbackResult.findMany({
+      orderBy: [{ score: 'desc' }, { createdAt: 'desc' }, { id: 'desc' }],
+      select: {
+        id: true,
+        title: true,
+        summary: true,
+        score: true,
+        priority: true,
+        contradiction: true,
+        createdAt: true,
+      },
+    });
+  }
+
   create(body: unknown, userId: string) {
     if (
       !body ||

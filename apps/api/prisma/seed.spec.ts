@@ -19,6 +19,7 @@ const mocks = vi.hoisted(() => {
 
 vi.mock('../src/prisma/prisma.js', () => ({
   prisma: {
+    feedbackResult: { upsert: vi.fn() },
     $transaction: async (callback: (tx: typeof mocks.tx) => unknown) =>
       callback(mocks.tx),
     $disconnect: mocks.disconnect,

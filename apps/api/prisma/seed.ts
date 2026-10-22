@@ -1,8 +1,10 @@
 import { randomUUID } from 'node:crypto';
 import { hashPassword } from 'better-auth/crypto';
 import { prisma } from '../src/prisma/prisma.js';
+import { seedFeedbackResults } from './feedback-results.js';
 
 try {
+  await seedFeedbackResults(prisma);
   for (const name of ['user', 'founder']) {
     const password = await hashPassword(name);
     await prisma.$transaction(async (tx) => {
