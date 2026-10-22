@@ -13,8 +13,8 @@
 
 - `schema-feedback.json` is the source of truth for every output produced by the Data pipeline.
 - `feedbacks.mock.json` must always remain valid against that schema.
-- The current feedback fields are required `id`, `text`, and ISO 8601 `createdAt`, with optional `userId`, `companyId`, and `plan`.
-- `plan` is explicitly approved. Never add `source` or `mrr` without an explicit decision from the user.
+- The current feedback fields are required `id`, `text`, and ISO 8601 `createdAt`, with optional `userId` and `plan`.
+- `plan` is explicitly approved. Never add `source`, `companyId`, or `mrr` without an explicit decision from the user.
 - Any contract change must update the schema, mock data, and associated tests together.
 - Validate every exported payload against `schema-feedback.json`.
 

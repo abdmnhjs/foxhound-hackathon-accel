@@ -12,7 +12,6 @@ def test_trims_feedback_string_fields() -> None:
                 "text": "  Synthetic feedback.  ",
                 "createdAt": "  2026-10-22T10:00:00Z  ",
                 "userId": "  usr_test_001  ",
-                "companyId": "  cmp_test_001  ",
                 "plan": "  Pro  ",
             }
         ]
@@ -25,7 +24,6 @@ def test_trims_feedback_string_fields() -> None:
                 "text": "Synthetic feedback.",
                 "createdAt": "2026-10-22T10:00:00Z",
                 "userId": "usr_test_001",
-                "companyId": "cmp_test_001",
                 "plan": "Pro",
             }
         ]

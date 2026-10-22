@@ -5,8 +5,7 @@
       "text": "The dashboard takes more than 12 seconds to load once we pass 50k records.",
       "createdAt": "2026-10-20T09:15:00Z",
       "userId": "usr_001",
-      "plan": "Free",
-      "companyId": "cmp_001"
+      "plan": "Free"
     },
     {
       "id": "fb_002",
@@ -20,8 +19,7 @@
       "text": "We need an export to CSV for our monthly reporting workflow.",
       "createdAt": "2026-10-21T08:45:00Z",
       "plan": "Pro",
-      "userId": "usr_003",
-      "companyId": "cmp_002"
+      "userId": "usr_003"
     },
     {
       "id": "fb_004",

@@ -37,10 +37,6 @@
           "type": "string",
           "minLength": 1
         },
-        "companyId": {
-          "type": "string",
-          "minLength": 1
-        },
         "plan": {
           "type": "string",
           "minLength": 1

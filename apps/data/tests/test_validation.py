@@ -20,7 +20,6 @@ def valid_feedback() -> dict[str, Any]:
         "text": "Synthetic valid feedback.",
         "createdAt": "2026-10-22T10:00:00Z",
         "userId": "usr_test_001",
-        "companyId": "cmp_test_001",
         "plan": "Pro",
     }
 
@@ -54,7 +53,7 @@ def test_rejects_a_missing_required_field(field: str) -> None:
         validate_feedback_payload({"feedbacks": [feedback]}, SCHEMA_PATH)
 
 
-@pytest.mark.parametrize("field", ["id", "text", "userId", "companyId", "plan"])
+@pytest.mark.parametrize("field", ["id", "text", "userId", "plan"])
 def test_rejects_an_empty_string(field: str) -> None:
     feedback = valid_feedback()
     feedback[field] = ""
@@ -71,7 +70,7 @@ def test_rejects_an_invalid_date() -> None:
         validate_feedback_payload({"feedbacks": [feedback]}, SCHEMA_PATH)
 
 
-@pytest.mark.parametrize("field", ["source", "mrr", "unexpected"])
+@pytest.mark.parametrize("field", ["source", "companyId", "mrr", "unexpected"])
 def test_rejects_a_forbidden_feedback_property(field: str) -> None:
     feedback = valid_feedback()
     feedback[field] = "forbidden"
