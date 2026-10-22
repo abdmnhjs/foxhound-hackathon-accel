@@ -51,27 +51,24 @@ export function AccountSpace({ founder }: { founder: boolean }) {
     }
   }
   return (
-    <main className="min-h-svh bg-background text-foreground">
-      <header className="flex flex-wrap items-center justify-between gap-4 border-b bg-white px-6 py-5 sm:px-10">
-        <a href="/" className="text-xl font-bold">
-          foxhound<span className="text-primary">.</span>
-        </a>
-        <div className="flex items-center gap-5">
-          <span className="text-sm text-muted-foreground">
-            {founder ? "Founder" : "User"}
-          </span>
-          <button
-            onClick={logout}
-            disabled={pending}
-            className="min-h-10 rounded-full border px-4 py-2 text-sm font-medium transition-colors hover:bg-muted disabled:opacity-50"
-          >
-            {pending ? "Signing out…" : "Sign out"}
-          </button>
-        </div>
-      </header>
+    <main className="min-h-svh bg-white text-foreground">
       <section
-        className={`mx-auto px-5 py-12 sm:px-8 sm:py-16 ${founder ? "max-w-4xl" : "max-w-2xl"}`}
+        className={`mx-auto px-5 py-8 sm:px-8 sm:py-12 ${founder ? "max-w-4xl" : "max-w-2xl"}`}
       >
+        <div className="mb-10 flex flex-wrap items-center justify-end gap-4 sm:mb-12">
+          <div className="flex items-center gap-5">
+            <span className="text-sm text-muted-foreground">
+              {founder ? "Founder" : "User"}
+            </span>
+            <button
+              onClick={logout}
+              disabled={pending}
+              className="min-h-10 rounded-full border px-4 py-2 text-sm font-medium transition-colors hover:bg-muted disabled:opacity-50"
+            >
+              {pending ? "Signing out…" : "Sign out"}
+            </button>
+          </div>
+        </div>
         {error && (
           <p role="alert" className="mb-6 text-red-700">
             {error}

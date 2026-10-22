@@ -92,10 +92,10 @@ export function FounderFeedback() {
               <span
                 className={`mt-2 inline-block rounded-full px-3 py-1 text-xs font-medium ${
                   feedback.priority === "red"
-                    ? "bg-red-100 text-red-800"
+                    ? "bg-green-100 text-green-800"
                     : feedback.priority === "yellow"
                       ? "bg-yellow-100 text-yellow-800"
-                      : "bg-green-100 text-green-800"
+                      : "bg-red-100 text-red-800"
                 }`}
               >
                 Priority:{" "}

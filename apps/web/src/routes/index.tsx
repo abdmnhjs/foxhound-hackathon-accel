@@ -56,12 +56,7 @@ function Login() {
     }
   }
   return (
-    <main className="flex min-h-svh flex-col bg-background text-foreground">
-      <header className="border-b bg-white px-6 py-5 sm:px-10">
-        <a href="/" className="text-xl font-bold tracking-tight">
-          foxhound<span className="text-primary">.</span>
-        </a>
-      </header>
+    <main className="flex min-h-svh flex-col bg-white text-foreground">
       <section className="flex flex-1 items-center justify-center px-5 py-16">
         <div className="w-full max-w-sm rounded-lg border bg-white p-6 sm:p-8">
           <h1 className="text-2xl font-bold tracking-tight">Welcome back</h1>
