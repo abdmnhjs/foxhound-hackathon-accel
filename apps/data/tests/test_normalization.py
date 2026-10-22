@@ -56,9 +56,24 @@ def test_leaves_invalid_or_timezone_free_dates_unchanged() -> None:
     assert normalized["feedbacks"] == feedbacks
 
 
-def test_preserves_unknown_properties_for_later_validation() -> None:
+def test_removes_explicitly_excluded_input_fields() -> None:
     payload = {
-        "feedbacks": [{"id": "fb_test_004", "source": "synthetic"}],
+        "feedbacks": [
+            {
+                "id": "fb_test_004",
+                "companyId": "cmp_001",
+                "source": "web",
+                "mrr": 1000,
+            }
+        ]
+    }
+
+    assert normalize_feedback_payload(payload) == {"feedbacks": [{"id": "fb_test_004"}]}
+
+
+def test_preserves_other_unknown_properties_for_later_validation() -> None:
+    payload = {
+        "feedbacks": [{"id": "fb_test_005", "unexpected": "synthetic"}],
         "unexpectedRootProperty": True,
     }
 
@@ -69,7 +84,7 @@ def test_does_not_mutate_the_input() -> None:
     payload: dict[str, Any] = {
         "feedbacks": [
             {
-                "id": "fb_test_005",
+                "id": "fb_test_006",
                 "createdAt": "2026-10-22T14:30:00+02:00",
             }
         ]

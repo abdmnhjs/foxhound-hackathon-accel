@@ -9,7 +9,10 @@ description = "Deterministic feedback pipeline for Foxhound"
 readme = "README.md"
 requires-python = ">=3.9"
 dependencies = [
+  "anyio>=4.4,<4.12",
+  "fastapi>=0.116,<0.117",
   "jsonschema[format]>=4.23,<5",
+  "uvicorn>=0.34,<0.35",
 ]
 
 [project.scripts]
@@ -17,6 +20,7 @@ foxhound-data = "foxhound_data.cli:main"
 
 [dependency-groups]
 dev = [
+  "httpx>=0.28,<1",
   "pytest>=8.3,<9",
   "ruff>=0.11,<1",
 ]

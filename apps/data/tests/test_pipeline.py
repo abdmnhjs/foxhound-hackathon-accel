@@ -73,17 +73,42 @@ def test_accepts_feedback_without_optional_fields(tmp_path: Path) -> None:
     assert output_path.is_file()
 
 
-@pytest.mark.parametrize("forbidden_field", ["source", "companyId", "mrr"])
-def test_rejects_forbidden_fields_without_exporting(
-    forbidden_field: str, tmp_path: Path
+@pytest.mark.parametrize("excluded_field", ["source", "companyId", "mrr"])
+def test_removes_excluded_fields_without_losing_feedback(
+    excluded_field: str, tmp_path: Path
 ) -> None:
-    input_path = tmp_path / f"invalid-{forbidden_field}.json"
-    output_path = tmp_path / f"output-{forbidden_field}.json"
+    input_path = tmp_path / f"input-{excluded_field}.json"
+    output_path = tmp_path / f"output-{excluded_field}.json"
     feedback = {
         "id": "fb_test_003",
+        "text": "Synthetic feedback with excluded metadata.",
+        "createdAt": "2026-10-22T14:00:00Z",
+        excluded_field: "excluded",
+    }
+    write_json(input_path, [feedback])
+
+    result = run_pipeline(PipelineOptions(input_path, SCHEMA_PATH, output_path))
+
+    assert result == {
+        "feedbacks": [
+            {
+                "id": "fb_test_003",
+                "text": "Synthetic feedback with excluded metadata.",
+                "createdAt": "2026-10-22T14:00:00Z",
+            }
+        ]
+    }
+    assert output_path.is_file()
+
+
+def test_rejects_an_unknown_field_without_exporting(tmp_path: Path) -> None:
+    input_path = tmp_path / "invalid-unknown.json"
+    output_path = tmp_path / "output-unknown.json"
+    feedback = {
+        "id": "fb_test_unknown",
         "text": "Synthetic invalid feedback.",
         "createdAt": "2026-10-22T14:00:00Z",
-        forbidden_field: "forbidden",
+        "unexpected": "forbidden",
     }
     write_json(input_path, [feedback])
 

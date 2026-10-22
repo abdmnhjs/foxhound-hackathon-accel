@@ -16,11 +16,16 @@ class PipelineOptions:
     output_path: Path
 
 
+def process_payload(payload: Any, schema_path: Path) -> dict[str, Any]:
+    """Clean, normalize, and validate an in-memory feedback payload."""
+    cleaned = clean_feedback_input(payload)
+    normalized = normalize_feedback_payload(cleaned)
+    return validate_feedback_payload(normalized, schema_path)
+
+
 def run_pipeline(options: PipelineOptions) -> dict[str, Any]:
     """Run every Data pipeline stage in its required order."""
     ingested = ingest_json(options.input_path)
-    cleaned = clean_feedback_input(ingested)
-    normalized = normalize_feedback_payload(cleaned)
-    validated = validate_feedback_payload(normalized, options.schema_path)
+    validated = process_payload(ingested, options.schema_path)
     export_feedback_payload(validated, options.output_path)
     return validated

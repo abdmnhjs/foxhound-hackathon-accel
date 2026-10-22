@@ -29,3 +29,23 @@ uv run foxhound-data \
 
 The command finds the repository-level `schema-feedback.json` automatically.
 Use `--schema path/to/schema.json` to provide another schema explicitly.
+
+## HTTP API
+
+Start the Data API from `apps/data`:
+
+```bash
+uv run uvicorn foxhound_data.api.app:app --host 0.0.0.0 --port 8000 --reload
+```
+
+Available endpoints:
+
+- `GET /health`
+- `POST /feedbacks/process`
+
+The process endpoint accepts the JSON contract from `schema-feedback.json` and
+returns the cleaned, normalized, and validated payload in memory.
+
+Incoming `companyId`, `source`, and `mrr` fields are explicitly removed before
+validation so that their presence does not discard an otherwise valid feedback.
+Other unknown properties remain validation errors.

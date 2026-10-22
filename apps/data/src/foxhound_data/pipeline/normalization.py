@@ -1,6 +1,8 @@
 from datetime import datetime, timezone
 from typing import Any
 
+EXCLUDED_INPUT_FIELDS = frozenset({"companyId", "source", "mrr"})
+
 
 def _normalize_datetime(value: Any) -> Any:
     if not isinstance(value, str) or "T" not in value:
@@ -23,7 +25,11 @@ def _normalize_feedback(value: Any) -> Any:
     if not isinstance(value, dict):
         return value
 
-    normalized = dict(value)
+    normalized = {
+        field: item
+        for field, item in value.items()
+        if field not in EXCLUDED_INPUT_FIELDS
+    }
     if "createdAt" in normalized:
         normalized["createdAt"] = _normalize_datetime(normalized["createdAt"])
     return normalized
