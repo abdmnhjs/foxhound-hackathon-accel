@@ -36,7 +36,7 @@ try {
         });
       await tx.session.deleteMany({ where: { userId: user.id } });
     });
-    console.log(`Compte ${name} prêt.`);
+    console.log(`Account ${name} is ready.`);
   }
 } finally {
   await prisma.$disconnect();

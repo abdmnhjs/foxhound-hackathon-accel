@@ -19,9 +19,9 @@ export async function authRequest<T>(path: string, body?: unknown): Promise<T> {
   })
   if (!response.ok) {
     if (response.status === 401 || response.status === 400)
-      throw new Error("Identifiant ou mot de passe incorrect.")
+      throw new Error("Incorrect username or password.")
     throw new Error(
-      "Connexion au serveur impossible. Réessaie dans un instant."
+      "Unable to connect to the server. Please try again shortly."
     )
   }
   return response.json() as Promise<T>

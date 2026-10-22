@@ -12,15 +12,15 @@ export const Route = createFileRoute("/")({
     const to = session && destination(session)
     if (to) throw redirect({ to })
   },
-  pendingComponent: () => <p className="p-8">Chargement…</p>,
+  pendingComponent: () => <p className="p-8">Loading…</p>,
   errorComponent: () => (
     <main className="p-8">
-      <p>Le serveur est indisponible.</p>
+      <p>The server is unavailable.</p>
       <button
         className="mt-4 underline"
         onClick={() => window.location.reload()}
       >
-        Réessayer
+        Try again
       </button>
     </main>
   ),
@@ -37,7 +37,7 @@ function Login() {
     const data = new FormData(event.currentTarget)
     const username = String(data.get("username")).trim().toLowerCase()
     if (!["user", "founder"].includes(username)) {
-      setError("Identifiant ou mot de passe incorrect.")
+      setError("Incorrect username or password.")
       return
     }
     setPending(true)
@@ -47,10 +47,11 @@ function Login() {
         password: String(data.get("password")),
       })
       const to = destination(session)
-      if (!to) throw new Error("Ce compte ne dispose pas d’un espace.")
+      if (!to)
+        throw new Error("This account does not have access to a workspace.")
       await navigate({ to, replace: true })
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "Connexion impossible.")
+      setError(cause instanceof Error ? cause.message : "Unable to sign in.")
     } finally {
       setPending(false)
     }
@@ -63,17 +64,17 @@ function Login() {
         </a>
         <div className="py-12 lg:py-24">
           <span className="text-xs font-semibold tracking-widest text-lime-300 uppercase">
-            Votre espace de collaboration
+            Your collaboration space
           </span>
           <h1 className="mt-6 max-w-lg text-4xl leading-tight font-semibold lg:text-6xl">
-            Les bonnes idées commencent par un échange.
+            Great ideas start with a conversation.
           </h1>
           <p className="mt-6 max-w-md leading-relaxed text-slate-400">
-            Partagez vos retours et construisez la suite, ensemble.
+            Share feedback and build what comes next, together.
           </p>
         </div>
         <p className="text-sm text-slate-500">
-          Foxhound · Du feedback à l’action.
+          Foxhound · From feedback to action.
         </p>
       </section>
       <section className="flex items-center justify-center px-6 py-14 lg:p-16">
@@ -81,27 +82,27 @@ function Login() {
           <div className="mb-6 flex size-12 items-center justify-center rounded-2xl border bg-white">
             <LockKeyhole size={22} />
           </div>
-          <h2 className="text-3xl font-semibold tracking-tight">Bienvenue</h2>
+          <h2 className="text-3xl font-semibold tracking-tight">Welcome</h2>
           <p className="mt-3 text-sm text-stone-500">
-            Connectez-vous pour retrouver votre espace.
+            Sign in to access your workspace.
           </p>
           <form onSubmit={submit} className="mt-9 space-y-5">
             <div>
               <label htmlFor="username" className="text-sm font-medium">
-                Nom d’utilisateur
+                Username
               </label>
               <input
                 id="username"
                 name="username"
                 autoComplete="username"
                 required
-                placeholder="Votre identifiant"
+                placeholder="Your username"
                 className="mt-2 h-12 w-full rounded-xl border bg-white px-4 outline-none focus:ring-2 focus:ring-slate-900"
               />
             </div>
             <div>
               <label htmlFor="password" className="text-sm font-medium">
-                Mot de passe
+                Password
               </label>
               <input
                 id="password"
@@ -121,7 +122,7 @@ function Login() {
               disabled={pending}
               className="flex h-12 w-full items-center justify-center gap-3 rounded-xl bg-slate-950 font-medium text-white hover:bg-slate-800 disabled:opacity-50"
             >
-              {pending ? "Connexion…" : "Se connecter"}
+              {pending ? "Signing in…" : "Sign in"}
               <ArrowRight size={18} />
             </button>
           </form>
