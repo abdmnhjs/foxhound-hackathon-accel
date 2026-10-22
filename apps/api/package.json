@@ -7,7 +7,7 @@
   "license": "UNLICENSED",
   "type": "module",
   "scripts": {
-    "seed": "npm run build && node dist/prisma/seed.js",
+    "seed": "npm run db:generate && tsc -p tsconfig.seed.json && node dist-seed/prisma/seed.js",
     "build": "nest build",
     "deploy": "nest deploy",
     "format": "prettier --write \"src/**/*.ts\" \"lib/**/*.ts\" \"test/**/*.ts\"",
