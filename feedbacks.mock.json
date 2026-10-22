@@ -1,0 +1,39 @@
+{
+  "feedbacks": [
+    {
+      "id": "fb_001",
+      "text": "The dashboard takes more than 12 seconds to load once we pass 50k records.",
+      "source": "support",
+      "createdAt": "2026-10-20T09:15:00Z",
+      "userId": "usr_001",
+      "companyId": "cmp_001",
+      "plan": "enterprise",
+      "mrr": 4200
+    },
+    {
+      "id": "fb_002",
+      "text": "Dark mode would make the application easier to use at night.",
+      "source": "app",
+      "createdAt": "2026-10-20T14:30:00Z",
+      "userId": "usr_002",
+      "plan": "free",
+      "mrr": 0
+    },
+    {
+      "id": "fb_003",
+      "text": "We need an export to CSV for our monthly reporting workflow.",
+      "source": "email",
+      "createdAt": "2026-10-21T08:45:00Z",
+      "userId": "usr_003",
+      "companyId": "cmp_002",
+      "plan": "pro",
+      "mrr": 199
+    },
+    {
+      "id": "fb_004",
+      "text": "The notification settings are difficult to understand.",
+      "source": "csv",
+      "createdAt": "2026-10-21T16:10:00Z"
+    }
+  ]
+}
