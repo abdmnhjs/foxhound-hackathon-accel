@@ -2,7 +2,6 @@ import { useState } from "react"
 import axios from "axios"
 import type { FormEvent } from "react"
 import { useNavigate } from "@tanstack/react-router"
-import { LogOut, MessageSquare, LayoutDashboard } from "lucide-react"
 import { authRequest } from "../lib/auth"
 import { FounderFeedback } from "./founder-feedback"
 
@@ -51,57 +50,49 @@ export function AccountSpace({ founder }: { founder: boolean }) {
       setPending(false)
     }
   }
-  const Icon = founder ? LayoutDashboard : MessageSquare
   return (
-    <main className="min-h-svh bg-stone-50 text-slate-950">
-      <header className="flex flex-wrap items-center justify-between gap-4 border-b bg-white px-6 py-5 lg:px-12">
+    <main className="min-h-svh bg-background text-foreground">
+      <header className="flex flex-wrap items-center justify-between gap-4 border-b bg-white px-6 py-5 sm:px-10">
         <a href="/" className="text-xl font-bold">
-          foxhound.
+          foxhound<span className="text-primary">.</span>
         </a>
         <div className="flex items-center gap-5">
-          <span className="text-sm text-stone-500">
-            {founder ? "founder" : "user"}
+          <span className="text-sm text-muted-foreground">
+            {founder ? "Founder" : "User"}
           </span>
           <button
             onClick={logout}
             disabled={pending}
-            className="flex items-center gap-2 rounded-lg border px-4 py-2 text-sm hover:bg-stone-50 disabled:opacity-50"
+            className="min-h-10 rounded-full border px-4 py-2 text-sm font-medium transition-colors hover:bg-muted disabled:opacity-50"
           >
-            <LogOut size={16} />
             {pending ? "Signing out…" : "Sign out"}
           </button>
         </div>
       </header>
-      <section className="mx-auto max-w-5xl px-6 py-16">
+      <section
+        className={`mx-auto px-5 py-12 sm:px-8 sm:py-16 ${founder ? "max-w-4xl" : "max-w-2xl"}`}
+      >
         {error && (
           <p role="alert" className="mb-6 text-red-700">
             {error}
           </p>
         )}
-        <span className="text-xs font-semibold tracking-widest text-stone-500 uppercase">
-          {founder ? "Founder" : "User"} workspace
-        </span>
-        <h1 className="mt-3 text-4xl font-semibold">
-          {founder ? "Dashboard" : "Feedback"}
+        <h1 className="text-3xl font-bold tracking-tight">
+          {founder ? "Dashboard" : "Share your feedback"}
         </h1>
-        <p className="mt-4 text-stone-500">
+        <p className="mt-2 text-sm text-muted-foreground">
           {founder
-            ? "Welcome to your dashboard."
-            : "Welcome to your feedback workspace."}
+            ? "What matters most to your users, in one place."
+            : "Tell us what works, what doesn't, or what you'd like next."}
         </p>
-        <div className="mt-10 rounded-2xl border bg-white p-10">
-          <Icon className="mb-5 text-stone-400" size={28} />
-          <h2 className="text-lg font-medium">
-            {founder ? "It all starts with an idea." : "Your feedback matters."}
-          </h2>
-          <p className="mt-2 text-sm text-stone-500">
-            {founder
-              ? "Explore the results of your feedback analysis."
-              : "Your conversations and feedback will appear here."}
-          </p>
+        <div
+          className={
+            founder ? "mt-8" : "mt-8 rounded-lg border bg-white p-5 sm:p-6"
+          }
+        >
           {founder && <FounderFeedback />}
           {!founder && (
-            <form onSubmit={submitFeedback} className="mt-6 space-y-4">
+            <form onSubmit={submitFeedback} className="space-y-5">
               <div>
                 <label htmlFor="feedback" className="text-sm font-medium">
                   Your feedback
@@ -113,13 +104,13 @@ export function AccountSpace({ founder }: { founder: boolean }) {
                   required
                   disabled={feedbackPending}
                   placeholder="Share your thoughts or suggestions..."
-                  className="mt-2 w-full resize-y rounded-xl border bg-white px-4 py-3 outline-none focus:ring-2 focus:ring-slate-900"
+                  className="mt-2 w-full resize-y rounded-lg border bg-white px-4 py-3 text-sm leading-relaxed outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 disabled:opacity-50"
                 />
               </div>
               <button
                 type="submit"
                 disabled={feedbackPending}
-                className="rounded-xl bg-slate-950 px-6 py-3 font-medium text-white hover:bg-slate-800 disabled:opacity-50"
+                className="min-h-11 rounded-full bg-primary px-6 py-3 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90 disabled:opacity-50"
               >
                 {feedbackPending ? "Sending..." : "Send feedback"}
               </button>

@@ -45,14 +45,14 @@ export function FounderFeedback() {
   }, [reload])
 
   return (
-    <div className="mt-6 space-y-4">
+    <div className="space-y-5">
       <div className="flex items-center justify-between gap-4">
-        <h3 className="font-medium">Feedback results</h3>
+        <h2 className="text-sm font-bold">Feedback results</h2>
         <button
           type="button"
           disabled={loading}
           onClick={() => setReload((value) => value + 1)}
-          className="rounded-lg border px-4 py-2 text-sm hover:bg-stone-50 disabled:opacity-50"
+          className="min-h-10 rounded-full border bg-white px-4 py-2 text-sm font-medium transition-colors hover:bg-muted disabled:opacity-50"
         >
           Refresh
         </button>
@@ -68,16 +68,27 @@ export function FounderFeedback() {
       ) : feedbacks.length === 0 ? (
         <p className="text-sm text-stone-500">No feedback results yet.</p>
       ) : (
-        <ul className="space-y-4">
+        <ul className="space-y-3">
           {feedbacks.map((feedback) => (
-            <li key={feedback.id} className="rounded-xl border p-5">
-              <div className="flex flex-wrap justify-between gap-2 text-sm text-stone-500">
-                <span>Score: {feedback.score}</span>
+            <li
+              key={feedback.id}
+              className="rounded-lg border bg-white p-5 sm:p-6"
+            >
+              <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground">
+                <span className="rounded-full bg-orange-50 px-3 py-1 font-bold text-primary">
+                  Score: {feedback.score}
+                </span>
                 <time dateTime={feedback.createdAt}>
-                  {new Date(feedback.createdAt).toLocaleString("en-GB")}
+                  {new Date(feedback.createdAt).toLocaleDateString("en-GB", {
+                    day: "numeric",
+                    month: "short",
+                    year: "numeric",
+                  })}
                 </time>
               </div>
-              <h4 className="mt-3 font-semibold">{feedback.title}</h4>
+              <h3 className="mt-4 text-lg font-bold tracking-tight">
+                {feedback.title}
+              </h3>
               <span
                 className={`mt-2 inline-block rounded-full px-3 py-1 text-xs font-medium ${
                   feedback.priority === "red"
@@ -94,7 +105,7 @@ export function FounderFeedback() {
                     ? "Medium"
                     : "Low"}
               </span>
-              <p className="mt-3 break-words whitespace-pre-wrap">
+              <p className="mt-3 text-sm leading-relaxed break-words whitespace-pre-wrap text-muted-foreground">
                 {feedback.summary}
               </p>
               {feedback.contradiction && (

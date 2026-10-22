@@ -1,7 +1,6 @@
 import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router"
 import { useState } from "react"
 import type { FormEvent } from "react"
-import { ArrowRight, LockKeyhole } from "lucide-react"
 import { authRequest, destination } from "../lib/auth"
 import type { Session } from "../lib/auth"
 
@@ -57,34 +56,17 @@ function Login() {
     }
   }
   return (
-    <main className="grid min-h-svh bg-stone-50 lg:grid-cols-2">
-      <section className="flex flex-col justify-between bg-slate-950 p-8 text-white lg:p-16">
+    <main className="flex min-h-svh flex-col bg-background text-foreground">
+      <header className="border-b bg-white px-6 py-5 sm:px-10">
         <a href="/" className="text-xl font-bold tracking-tight">
-          foxhound<span className="text-lime-300">.</span>
+          foxhound<span className="text-primary">.</span>
         </a>
-        <div className="py-12 lg:py-24">
-          <span className="text-xs font-semibold tracking-widest text-lime-300 uppercase">
-            Your collaboration space
-          </span>
-          <h1 className="mt-6 max-w-lg text-4xl leading-tight font-semibold lg:text-6xl">
-            Great ideas start with a conversation.
-          </h1>
-          <p className="mt-6 max-w-md leading-relaxed text-slate-400">
-            Share feedback and build what comes next, together.
-          </p>
-        </div>
-        <p className="text-sm text-slate-500">
-          Foxhound · From feedback to action.
-        </p>
-      </section>
-      <section className="flex items-center justify-center px-6 py-14 lg:p-16">
-        <div className="w-full max-w-sm">
-          <div className="mb-6 flex size-12 items-center justify-center rounded-2xl border bg-white">
-            <LockKeyhole size={22} />
-          </div>
-          <h2 className="text-3xl font-semibold tracking-tight">Welcome</h2>
-          <p className="mt-3 text-sm text-stone-500">
-            Sign in to access your workspace.
+      </header>
+      <section className="flex flex-1 items-center justify-center px-5 py-16">
+        <div className="w-full max-w-sm rounded-lg border bg-white p-6 sm:p-8">
+          <h1 className="text-2xl font-bold tracking-tight">Welcome back</h1>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Sign in to your workspace.
           </p>
           <form onSubmit={submit} className="mt-9 space-y-5">
             <div>
@@ -97,7 +79,7 @@ function Login() {
                 autoComplete="username"
                 required
                 placeholder="Your username"
-                className="mt-2 h-12 w-full rounded-xl border bg-white px-4 outline-none focus:ring-2 focus:ring-slate-900"
+                className="mt-2 h-11 w-full rounded-lg border bg-white px-4 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
               />
             </div>
             <div>
@@ -110,7 +92,7 @@ function Login() {
                 type="password"
                 autoComplete="current-password"
                 required
-                className="mt-2 h-12 w-full rounded-xl border bg-white px-4 outline-none focus:ring-2 focus:ring-slate-900"
+                className="mt-2 h-11 w-full rounded-lg border bg-white px-4 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
               />
             </div>
             {error && (
@@ -120,10 +102,9 @@ function Login() {
             )}
             <button
               disabled={pending}
-              className="flex h-12 w-full items-center justify-center gap-3 rounded-xl bg-slate-950 font-medium text-white hover:bg-slate-800 disabled:opacity-50"
+              className="h-11 w-full rounded-full bg-primary text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90 disabled:opacity-50"
             >
               {pending ? "Signing in…" : "Sign in"}
-              <ArrowRight size={18} />
             </button>
           </form>
         </div>
