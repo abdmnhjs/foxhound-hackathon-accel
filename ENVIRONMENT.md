@@ -1,5 +1,31 @@
 # Configuration locale
 
+## Comptes de démonstration
+
+Depuis la racine, exécuter `npm run seed` (ou la même commande dans `apps/api`).
+Ce script crée ou met à jour les comptes suivants, avec des mots de passe hachés
+au format Better Auth :
+
+| Identifiant | Mot de passe | Espace     |
+| ----------- | ------------ | ---------- |
+| user        | user         | /feedback  |
+| founder     | founder      | /dashboard |
+
+Le formulaire de connexion est sur `/`. Ces identifiants correspondent aux emails
+internes `user@foxhound.test` et `founder@foxhound.test`. Le seed réinitialise leurs
+mots de passe et ferme leurs sessions existantes. Les inscriptions publiques sont
+désactivées. Aucune migration supplémentaire n'est nécessaire.
+
+Lancer `npm run dev` depuis la racine : API sur le port 3000, frontend sur
+`http://localhost:3001`. Vite transmet `/api/auth` à l'API. Si `PORT` a été modifié,
+adapter la cible du proxy dans `apps/web/vite.config.ts`. En production, configurer
+également le reverse proxy pour transmettre `/api/auth` à NestJS.
+`BETTER_AUTH_TRUSTED_ORIGINS` doit inclure l'origine du frontend.
+
+La commande npm pour un script personnalisé est **`npm run seed`**, et non `npm seed`.
+
+## Variables d'environnement
+
 Créer ou compléter le fichier `.env` à la racine du monorepo (à côté du
 `package.json` principal) avec ces variables :
 

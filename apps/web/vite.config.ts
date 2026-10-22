@@ -5,6 +5,11 @@ import viteReact from "@vitejs/plugin-react"
 import tailwindcss from "@tailwindcss/vite"
 
 const config = defineConfig({
+  server: {
+    proxy: {
+      "/api/auth": { target: "http://localhost:3000", changeOrigin: false },
+    },
+  },
   resolve: { tsconfigPaths: true },
   plugins: [devtools(), tailwindcss(), tanstackStart(), viteReact()],
 })

@@ -3,6 +3,6 @@
   "compilerOptions": {
     "rootDir": "."
   },
-  "include": ["src", "lib"],
+  "include": ["src", "lib", "prisma/seed.ts"],
   "exclude": ["node_modules", "test", "dist", "**/*spec.ts"]
 }
